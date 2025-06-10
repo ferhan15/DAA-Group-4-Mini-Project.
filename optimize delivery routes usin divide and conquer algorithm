@@ -40,3 +40,80 @@ std::string pointsToString(const std::vector<Point>& points) {
     ss << "]";
     return ss.str();
 }
+// Creates an indentation string based on recursion depth
+std::string routeToString(const Route& route) {
+    ss << route[0].id; // Complete the loop
+    return ss.str();
+}
+
+// Calculates the Euclidean distance between two points
+double distance(const Point& p1, const Point& p2) {
+    return std::sqrt(std::pow(p1.x - p2.x, 2) + std::pow(p1.y - p2.y, 2));
+}
+
+// Calculates the total length of a tour (a closed loop)
+double calculateTotalDistance(const Route& route) {
+    if (route.size() < 2) return 0.0;
+    double totalDist = 0.0;
+    for (size_t i = 0; i < route.size() - 1; ++i) {
+        totalDist += distance(route[i], route[i + 1]);
+    }
+    totalDist += distance(route.back(), route.front());
+    return totalDist;
+}
+
+// --- FORWARD DECLARATION ---
+// We need to declare the main recursive function to call it from main
+Route divideAndConquerTSP(std::vector<Point>& points, int depth);
+
+
+// --- COMBINE PHASE ---
+
+Route mergeRoutes(const Route& route1, const Route& route2, int depth) {
+    std::cout << indent(depth) << "   COMBINE PHASE" << std::endl;
+    std::cout << indent(depth) << "   - Sub-Tour A: " << routeToString(route1) << std::endl;
+    std::cout << indent(depth) << "   - Sub-Tour B: " << routeToString(route2) << std::endl;
+
+    if (route1.empty()) return route2;
+    if (route2.empty()) return route1;
+
+    double minIncrease = std::numeric_limits<double>::max();
+
+std::string routeToString(const Route& route) {
+    ss << route[0].id; // Complete the loop
+    return ss.str();
+}
+
+// Calculates the Euclidean distance between two points
+double distance(const Point& p1, const Point& p2) {
+    return std::sqrt(std::pow(p1.x - p2.x, 2) + std::pow(p1.y - p2.y, 2));
+}
+
+// Calculates the total length of a tour (a closed loop)
+double calculateTotalDistance(const Route& route) {
+    if (route.size() < 2) return 0.0;
+    double totalDist = 0.0;
+    for (size_t i = 0; i < route.size() - 1; ++i) {
+        totalDist += distance(route[i], route[i + 1]);
+    }
+    totalDist += distance(route.back(), route.front());
+    return totalDist;
+}
+
+// --- FORWARD DECLARATION ---
+// We need to declare the main recursive function to call it from main
+Route divideAndConquerTSP(std::vector<Point>& points, int depth);
+
+
+// --- COMBINE PHASE ---
+
+Route mergeRoutes(const Route& route1, const Route& route2, int depth) {
+    std::cout << indent(depth) << "   COMBINE PHASE" << std::endl;
+    std::cout << indent(depth) << "   - Sub-Tour A: " << routeToString(route1) << std::endl;
+    std::cout << indent(depth) << "   - Sub-Tour B: " << routeToString(route2) << std::endl;
+
+    if (route1.empty()) return route2;
+    if (route2.empty()) return route1;
+
+    double minIncrease = std::numeric_limits<double>::max();
+    int best_i = -1, best_j = -1;
