@@ -117,3 +117,41 @@ Route mergeRoutes(const Route& route1, const Route& route2, int depth) {
 
     double minIncrease = std::numeric_limits<double>::max();
     int best_i = -1, best_j = -1;
+std::cout << indent(depth) << "   DIVIDE PHASE" << std::endl;
+    double minX = points[0].x, maxX = points[0].x;
+    double minY = points[0].y, maxY = points[0].y;
+    for (const auto& p : points) {
+        minX = std::min(minX, p.x);
+        maxX = std::max(maxX, p.x);
+        minY = std::min(minY, p.y);
+        maxY = std::max(maxY, p.y);
+    }
+    
+    // Sort along the wider dimension for a good spatial split
+    if (maxX - minX > maxY - minY) {
+        std::sort(points.begin(), points.end(), [](const Point& a, const Point& b) { return a.x < b.x; });
+        std::cout << indent(depth) << "   - Splitting by X-coordinate." << std::endl;
+    } else {
+        std::sort(points.begin(), points.end(), [](const Point& a, const Point& b) { return a.y < b.y; });
+        std::cout << indent(depth) << "   - Splitting by Y-coordinate." << std::endl;
+    }
+
+    size_t mid = points.size() / 2;
+    std::vector<Point> left_points(points.begin(), points.begin() + mid);
+    std::vector<Point> right_points(points.begin() + mid, points.end());
+
+    std::cout << indent(depth) << "   - Left half: " << pointsToString(left_points) << std::endl;
+    std::cout << indent(depth) << "   - Right half: " << pointsToString(right_points) << std::endl;
+
+    // --- CONQUER PHASE ---
+    std::cout << indent(depth) << "   CONQUER PHASE (Recursive Calls)" << std::endl;
+    Route route1 = divideAndConquerTSP(left_points, depth + 1);
+    Route route2 = divideAndConquerTSP(right_points, depth + 1);
+
+    // --- COMBINE PHASE ---
+    // The mergeRoutes function handles its own printing
+    Route finalRoute = mergeRoutes(route1, route2, depth);
+    
+    std::cout << indent(depth) << "<- Exiting D&C Function for points: " << pointsToString(original_points_for_logging) << std::endl;
+    return finalRoute;
+}
