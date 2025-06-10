@@ -155,3 +155,51 @@ std::cout << indent(depth) << "   DIVIDE PHASE" << std::endl;
     std::cout << indent(depth) << "<- Exiting D&C Function for points: " << pointsToString(original_points_for_logging) << std::endl;
     return finalRoute;
 }
+for (size_t i = 0; i < route1.size(); ++i) {
+        const Point& p1_i = route1[i];
+        const Point& p1_next = route1[(i + 1) % route1.size()];
+        for (size_t j = 0; j < route2.size(); ++j) {
+            const Point& p2_j = route2[j];
+            const Point& p2_next = route2[(j + 1) % route2.size()];
+            double currentIncrease = distance(p1_i, p2_j) + distance(p1_next, p2_next)
+                                     - distance(p1_i, p1_next) - distance(p2_j, p2_next);
+            if (currentIncrease < minIncrease) {
+                minIncrease = currentIncrease;
+                best_i = i;
+                best_j = j;
+            }
+        }
+    }
+
+    Route mergedRoute;
+    mergedRoute.reserve(route1.size() + route2.size());
+
+    for (int i = 0; i <= best_i; ++i) {
+        mergedRoute.push_back(route1[i]);
+    }
+    for (int i = 0; i < route2.size(); ++i) {
+        mergedRoute.push_back(route2[(best_j + 1 + i) % route2.size()]);
+    }
+    for (size_t i = best_i + 1; i < route1.size(); ++i) {
+        mergedRoute.push_back(route1[i]);
+    }
+
+    std::cout << indent(depth) << "   => Merged Tour: " << routeToString(mergedRoute) << std::endl;
+    return mergedRoute;
+}
+
+
+// --- THE MAIN DIVIDE AND CONQUER ALGORITHM ---
+
+Route divideAndConquerTSP(std::vector<Point>& points, int depth) {
+    // For logging, save the original point set before sorting
+    const std::vector<Point> original_points_for_logging = points;
+    std::cout << std::endl << indent(depth)
+              << "-> Entering D&C Function for points: " << pointsToString(original_points_for_logging) << std::endl;
+
+    // --- BASE CASE ---
+    if (points.size() <= 3) {
+        std::cout << indent(depth) << "   BASE CASE: Point set is small. Returning trivial tour." << std::endl;
+        std::cout << indent(depth) << "<- Exiting. Result: " << routeToString(points) << std::endl;
+        return points;
+    }
