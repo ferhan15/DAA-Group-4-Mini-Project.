@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <algorithm>
+#include <limits>
+#include <numeric>
+
+/**
+ * @file tsp_divide_and_conquer_sim
+ulation.cpp
+ * @brief This version is enhanced with detailed print statements to simulate
+ *        and explain the Divide and Conquer process step-by-step.
+ */
+
+// --- Data Structures ---
+struct Point {
+    int id;
+    double x, y;
+};
+using Route = std::vector<Point>;
+
+
+// --- UTILITY AND LOGGING FUNCTIONS ---
+
+// Creates an indentation string based on recursion depth
+std::string indent(int depth) {
+    return std::string(depth * 4, ' ');
+}
+
+// Converts a list of points to a readable string like "[1, 2, 3]"
+std::string pointsToString(const std::vector<Point>& points) {
+    if (points.empty()) return "[]";
+    std::stringstream ss;
+    ss << "[";
+    for (size_t i = 0; i < points.size(); ++i) {
+        ss << points[i].id << (i == points.size() - 1 ? "" : ", ");
+    }
+    ss << "]";
+    return ss.str();
+}
