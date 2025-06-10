@@ -203,3 +203,26 @@ Route divideAndConquerTSP(std::vector<Point>& points, int depth) {
         std::cout << indent(depth) << "<- Exiting. Result: " << routeToString(points) << std::endl;
         return points;
     }
+int main() {
+    std::vector<Point> locations = {
+        {1, 60, 200}, {2, 180, 200}, {3, 80, 180}, {4, 140, 180},
+        {5, 20, 160}, {6, 100, 120}, {7, 20, 40},  {8, 100, 40}
+    };
+
+    std::cout << "==================================================================\n";
+    std::cout << "  TSP Route Optimization: Divide and Conquer Simulation\n";
+    std::cout << "==================================================================\n";
+    std::cout << "Initial locations: " << pointsToString(locations) << "\n";
+    
+    // --- Run the simulation ---
+    Route optimizedRoute = divideAndConquerTSP(locations, 0);
+
+    // --- Final Results ---
+    std::cout << "\n==================================================================\n";
+    std::cout << "                      Final Optimized Route\n";
+    std::cout << "==================================================================\n";
+    std::cout << "Route: " << routeToString(optimizedRoute) << "\n";
+    std::cout << "Total Distance: " << calculateTotalDistance(optimizedRoute) << std::endl;
+
+    return 0;
+}
