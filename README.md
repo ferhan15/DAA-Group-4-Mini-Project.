@@ -1,3 +1,9 @@
+group member
+1.addisalem megersa.....NSR/067/15
+2.elshaday solomon......NSR/326/15
+3.endelbua milkias......NSR/338/1
+4.rahma mohammed.......NSR/781/15
+5.tekiya kedir........NSR/894/15
 
 Discussion: Algorithm Selection and Efficiency
 Here is a clear and simple breakdown of the choices made in this program.
